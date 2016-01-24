@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<style>
+body {
+	text-align: center;
+}
+
+table, th, td {
+	border: 1px solid black;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	
+}
+</style>
+
+<body>
+	<h1>Making the AJAX call to a controller</h1>
+	<button id="getAll">Getting all pets</button>
+	<div><table id="petTable"></table></div>
+
+</body>
+<script>
+	$("#getAll").on("click", getAjax);
+
+	function getAjax() {
+		$.ajax({
+			type : "get",
+			url : "http://localhost:8081/MyWebapp/petJson.htm"
+		}).done(function(jsonResponse) {
+			var petList = JSON.parse(jsonResponse);
+			//For adding the table header stuff:
+			var tableHeaders = "<tr id=\"petHeader\">";
+			for (key in petList[0]) {
+				tableHeaders += ("<th>" + key + "</th>");
+			}
+			tableHeaders += "</tr>";
+
+			//For adding table content stuff:
+			var petRows = "";
+			for (var i = 0; i < petList.length; i++) {
+				petRows += "<tr>";
+				var currentPet = petList[i];
+				for (key in currentPet) {
+					petRows += ("<td>" + currentPet[key] + "</td>");
+				}
+				petRows += "</tr>";
+			}
+			$("#petTable").html(tableHeaders + petRows);
+		}).fail(function(jqXHR, exception) {
+			$("#content").text(exception);
+		});
+	}
+</script>
+
+</html>

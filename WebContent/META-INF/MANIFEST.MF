@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Class-Path: "C:\apache-tomcat-7.0.64\lib\servlet-api.jar"

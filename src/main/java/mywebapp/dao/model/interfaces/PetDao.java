@@ -4,10 +4,14 @@ package mywebapp.dao.model.interfaces;
 
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import mywebapp.model.Pet;
 
 public interface PetDao {
+	final static Logger LOG = LoggerFactory.getLogger(PetDao.class);
+	
 	//Get all pets, return the list of them:
 	public List<Pet> getAllPets() throws DataAccessException;
 	

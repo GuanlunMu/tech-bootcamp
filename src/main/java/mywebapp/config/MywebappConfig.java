@@ -1,11 +1,11 @@
 package mywebapp.config;
 
-import java.util.Locale;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -41,16 +41,26 @@ public class MywebappConfig {
 		return properties;
 	}
 
-	@Bean
+	@Bean(name = "getDataSource")
 	public DriverManagerDataSource getDataSource() {
 		DriverManagerDataSource datasource = new DriverManagerDataSource();
 		datasource.setDriverClassName("com.mysql.jdbc.Driver");
-		datasource.setUrl("jdbc:mysql://localhost/zoo");
+		datasource.setUrl("jdbc:mysql://localhost/bootcamp");
 		datasource.setUsername("root");
 		datasource.setPassword("Jianqiao(3)");
 		return datasource;
 	}
 
+	@Bean(name = "datasource")
+	public BasicDataSource datasource() {
+		BasicDataSource datasource = new BasicDataSource();
+		datasource.setDriverClassName("com.mysql.jdbc.Driver");
+		datasource.setUrl("jdbc:mysql://localhost/bootcamp");
+		datasource.setUsername("root");
+		datasource.setPassword("Jianqiao(3)");
+		return datasource;
+		
+	}
 	@Bean
 	public LocalContainerEntityManagerFactoryBean emf() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -89,6 +99,7 @@ public class MywebappConfig {
 		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
 	}
+
 
 //	@Bean
 //	public LocaleResolver localeResolver() {

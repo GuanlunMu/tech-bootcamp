@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -15,15 +17,20 @@ import mywebapp.model.Pet;
 
 @Repository("PetDaoJdbcImpl")
 public class PetDaoJdbcImpl implements PetDao{
+	
+	static final private Logger LOG = LoggerFactory.getLogger(PetDaoJdbcImpl.class);
+
+	public static Logger getLog() {
+		return LOG;
+	}
 
 	@Override
 	public List<Pet> getAllPets() throws DataAccessException {
 		ArrayList<Pet> allPets = new ArrayList<Pet>();
-		MySqlDaoFactory factory = new MySqlDaoFactory();
 
 		final String sql = "SELECT * FROM pet;";
 		try {
-			System.out.println("Setting up the connection....");
+			getLog().info("Setting up the connection....");
 
 			Connection conn = MySqlDaoFactory.createConnection();
 			Statement stmt = conn.createStatement();

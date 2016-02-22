@@ -7,13 +7,14 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Repository;
 
 import mywebapp.dao.model.interfaces.PetDao;
@@ -21,6 +22,13 @@ import mywebapp.model.Pet;
 
 @Repository("PetDaoSpringJdbcImpl")
 public class PetDaoSpringJdbcImpl implements PetDao{
+	
+	static final private Logger LOG = LoggerFactory.getLogger(PetDaoJdbcImpl.class);
+
+	public static Logger getLog() {
+		return LOG;
+	}
+
 	
 	private class PetMapper implements RowMapper<Pet> {
 
@@ -55,6 +63,7 @@ public class PetDaoSpringJdbcImpl implements PetDao{
 
 	@Override
 	public List<Pet> getAllPets() throws DataAccessException {
+		getLog().info("Getting all Pets.....");
 		List<Pet> pets = this.jdbcTemplate.query("select * from pet", new BeanPropertyRowMapper<Pet>(Pet.class));
 		return pets;
 	}

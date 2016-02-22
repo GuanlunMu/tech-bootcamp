@@ -10,7 +10,6 @@ import org.springframework.dao.DataAccessException;
 import mywebapp.model.Pet;
 
 public interface PetDao {
-	final static Logger LOG = LoggerFactory.getLogger(PetDao.class);
 	
 	//Get all pets, return the list of them:
 	public List<Pet> getAllPets() throws DataAccessException;

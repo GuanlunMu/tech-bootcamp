@@ -1,6 +1,5 @@
 package mywebapp.dao.model.impl;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -10,8 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import mywebapp.dao.model.interfaces.PetDao;
@@ -19,6 +18,13 @@ import mywebapp.model.Pet;
 
 @Repository("PetDaoJpaImpl")
 public class PetDaoJpaImpl implements PetDao {
+	
+	static final private Logger LOG = LoggerFactory.getLogger(PetDaoJdbcImpl.class);
+
+	public static Logger getLog() {
+		return LOG;
+	}
+
 	@PersistenceUnit
 	private EntityManagerFactory emf;
 
@@ -26,9 +32,9 @@ public class PetDaoJpaImpl implements PetDao {
 	public List<Pet> getAllPets() {
 		EntityManager em = this.emf.createEntityManager();
 		try {
-			System.out.println("Getting single pet");
+			getLog().info("Getting single pet");
 			Query query = em.createQuery("SELECT p FROM Pet p");
-			List results = query.getResultList();
+			List<Pet> results = query.getResultList();
 			return results;
 		} finally {
 			if (em != null) {
@@ -42,7 +48,7 @@ public class PetDaoJpaImpl implements PetDao {
 		int idInt = Integer.parseInt(id);
 		EntityManager em = this.emf.createEntityManager();
 		try {
-			System.out.println("Getting pets according to ID");
+			getLog().info("Getting pets according to ID");
 			Query query = em.createQuery("SELECT p FROM Pet p WHERE p.id = :id").setParameter("id", idInt);
 			List results = query.getResultList();
 			return results;
@@ -57,7 +63,7 @@ public class PetDaoJpaImpl implements PetDao {
 	public List<Pet> getPetsBySpecies(String species) {
 		EntityManager em = this.emf.createEntityManager();
 		try {
-			System.out.println("Getting pets by species........");
+			getLog().info("Getting pets by species........");
 			Query query = em.createQuery("SELECT p FROM Pet p WHERE p.species = :species").setParameter("species",
 					species);
 			List results = query.getResultList();
@@ -73,7 +79,7 @@ public class PetDaoJpaImpl implements PetDao {
 	public List<Pet> getPetsByName(String name) {
 		EntityManager em = this.emf.createEntityManager();
 		try {
-			System.out.println("Getting pets by name........");
+			getLog().info("Getting pets by name........");
 			Query query = em.createQuery("SELECT p FROM Pet p WHERE p.name = :name").setParameter("name", name);
 			List results = query.getResultList();
 			return results;
@@ -104,7 +110,7 @@ public class PetDaoJpaImpl implements PetDao {
 		newPet.setBirth(parsed);
 
 		try {
-			System.out.println("Inserting pet........");
+			getLog().info("Inserting pet........");
 			em.getTransaction().begin();
 			em.persist(newPet);
 			em.getTransaction().commit();

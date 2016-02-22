@@ -2,9 +2,10 @@ package mywebapp.controller;
 
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,14 +17,17 @@ import mywebapp.model.Pet;
 @Controller
 @RequestMapping
 public class PetController {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(PetController.class);
+
+	public static Logger getLog() {
+		return LOG;
+	}
 
 	@Autowired
 	@Qualifier("PetDaoJpaImpl")
 	private PetDao petDao;
 	
-	@Autowired
-	private ResourceBundleMessageSource messageSource;
-
 	public PetDao getPetDao() {
 		return petDao;
 	}
@@ -34,17 +38,9 @@ public class PetController {
 
 	@RequestMapping(value = "pet.htm", method = RequestMethod.GET)
 	public ModelAndView getAllPets() throws Exception {
-		System.out.println("Activating controller........");
+		getLog().info("Activating controller........");
 		List<Pet> petList = getPetDao().getAllPets();
-		System.out.println("Getting name in nameList......");
-		System.out.println("Servelet returning following Pet......");
-		for (Pet pet : petList) {
-			System.out.println(pet.getName());
-		}
-		
-		Locale en = new Locale("de");
-		String userTitle = messageSource.getMessage("user.title", null, en);
-		System.out.println("Showing i18n......." + userTitle);
+		getLog().info("Getting name in nameList......");
 		return new ModelAndView("petInfo", "petList", petList);
 	}
 
@@ -54,7 +50,7 @@ public class PetController {
 		String id = reqPar.get("id");
 		String species = reqPar.get("species");
 		String name = reqPar.get("name");
-		System.out.println("The value for id and species are: " + id + " and" + species);
+		getLog().info("The value for id and species are: " + id + " and" + species);
 		if (!id.equals("")) {
 			petList = getPetDao().getPetsById(id);
 		} else if (!name.equals("")) {

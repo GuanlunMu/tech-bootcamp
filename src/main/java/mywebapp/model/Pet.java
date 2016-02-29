@@ -1,36 +1,40 @@
 package mywebapp.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
-@Table(name="Pet")
+@Table(name = "Pet")
 public class Pet {
-	@Id
-	@Column(name = "id")
+
 	private int id;
 
-	@Column(name="name")
 	private String name;
-	
-	@Column(name="owner")
+
 	private String owner;
-	
-	@Column(name="species")
+
 	private String species;
-	
-	@Column(name="sex")
+
 	private String sex;
-	
-	@Column(name="birth")
+
 	private Date birth;
-	
-	@Column(name="death")
+
 	private Date death;
 
+	private Owner ownerDetail;
+	
+	private Set<Toy> toys;
+
+	@Id
+	@Column(name = "pet_id")
 	public int getId() {
 		return id;
 	}
@@ -38,7 +42,7 @@ public class Pet {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -85,6 +89,26 @@ public class Pet {
 
 	public void setDeath(Date death) {
 		this.death = death;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "owner_detail")
+	public Owner getOwnerDetail() {
+		return ownerDetail;
+	}
+
+	public void setOwnerDetail(Owner ownerDetail) {
+		this.ownerDetail = ownerDetail;
+	}
+
+	@OneToMany
+	@JoinColumn(name = "toy_id")
+	public Set<Toy> getToys() {
+		return toys;
+	}
+
+	public void setToys(Set<Toy> toys) {
+		this.toys = toys;
 	}
 
 }

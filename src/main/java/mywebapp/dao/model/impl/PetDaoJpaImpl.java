@@ -2,8 +2,11 @@ package mywebapp.dao.model.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,11 +17,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import mywebapp.dao.model.interfaces.PetDao;
+import mywebapp.model.Owner;
 import mywebapp.model.Pet;
+import mywebapp.model.Toy;
 
 @Repository("PetDaoJpaImpl")
 public class PetDaoJpaImpl implements PetDao {
-	
+
 	static final private Logger LOG = LoggerFactory.getLogger(PetDaoJdbcImpl.class);
 
 	public static Logger getLog() {
@@ -34,6 +39,7 @@ public class PetDaoJpaImpl implements PetDao {
 		try {
 			getLog().info("Getting single pet");
 			Query query = em.createQuery("SELECT p FROM Pet p");
+			System.out.println("Getting all Results.....");
 			List<Pet> results = query.getResultList();
 			return results;
 		} finally {
@@ -98,7 +104,25 @@ public class PetDaoJpaImpl implements PetDao {
 		newPet.setName(petInfo.get("name"));
 		newPet.setOwner(petInfo.get("owner"));
 		newPet.setSpecies(petInfo.get("species").toLowerCase());
-		newPet.setSex(petInfo.get("sex").substring(0,1));
+		newPet.setSex(petInfo.get("sex").substring(0, 1));
+
+		Toy toy1 = new Toy();
+		toy1.setName("Sandy");
+		toy1.setType("biting");
+		
+		Toy toy2 = new Toy();
+		toy2.setName("Wheel");
+		toy2.setType("running");
+		
+		Set<Toy> toys = new HashSet<Toy>();
+		toys.add(toy1);
+		toys.add(toy2);
+		newPet.setToys(toys);
+		
+		Owner ownerDetail = new Owner();
+		ownerDetail.setName(petInfo.get("owner"));
+		ownerDetail.setAge(23);
+		newPet.setOwnerDetail(ownerDetail);
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date parsed = null;

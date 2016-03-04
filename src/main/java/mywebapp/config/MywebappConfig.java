@@ -5,7 +5,6 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -15,16 +14,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-
-import mywebapp.controller.PetController;
-import mywebapp.dao.model.impl.PetDaoJdbcImpl;
-import mywebapp.dao.model.impl.PetDaoJpaImpl;
-import mywebapp.dao.model.interfaces.PetDao;
 
 import org.springframework.context.annotation.ComponentScan;
 
@@ -51,16 +43,16 @@ public class MywebappConfig {
 		return datasource;
 	}
 
-	@Bean(name = "datasource")
-	public BasicDataSource datasource() {
-		BasicDataSource datasource = new BasicDataSource();
-		datasource.setDriverClassName("com.mysql.jdbc.Driver");
-		datasource.setUrl("jdbc:mysql://localhost/bootcamp");
-		datasource.setUsername("root");
-		datasource.setPassword("Jianqiao(3)");
-		return datasource;
-		
-	}
+//	@Bean(name = "datasource")
+//	public BasicDataSource datasource() {
+//		BasicDataSource datasource = new BasicDataSource();
+//		datasource.setDriverClassName("com.mysql.jdbc.Driver");
+//		datasource.setUrl("jdbc:mysql://localhost/bootcamp");
+//		datasource.setUsername("root");
+//		datasource.setPassword("Jianqiao(3)");
+//		return datasource;
+//		
+//	}
 	@Bean
 	public LocalContainerEntityManagerFactoryBean emf() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();

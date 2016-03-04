@@ -56,7 +56,7 @@ public class PetDaoSpringJdbcImpl implements PetDao{
 	}
 
 	@Autowired
-	@Qualifier("datasource")
+	@Qualifier("getDataSource")
 	public void setJdbcTemplate(final DataSource dataScource) {
 		this.jdbcTemplate = new JdbcTemplate(dataScource);
 	}

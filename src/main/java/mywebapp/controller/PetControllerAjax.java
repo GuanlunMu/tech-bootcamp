@@ -3,6 +3,8 @@ package mywebapp.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +21,18 @@ import mywebapp.model.Pet;
 @RestController
 @RequestMapping(value = "petJson.htm")
 public class PetControllerAjax {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(PetControllerAjax.class);
+	
+	public static Logger getLog() {
+		return LOG;
+	}
+	
 	@Autowired
 	@Qualifier("PetDaoJpaImpl")
 	private PetDao petDao;
+
+	
 
 	public PetDao getPetDao() {
 		return petDao;
@@ -33,12 +44,8 @@ public class PetControllerAjax {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody String getAllPets() throws IOException {
-		System.out.println("AJAX Controller activating........");
+		getLog().info("REST Controller activating........");
 		List<Pet> petList = getPetDao().getAllPets();
-		System.out.println("AJAX calls return the following pets:");
-		for (Pet p: petList) {
-			System.out.println(p.getName());
-		}
 		ObjectMapper om = new ObjectMapper();
 		String petListJson = om.writeValueAsString(petList);
 		om.writeValue(System.out,petList);
